@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.application.TeacherDashboardController">
+
+    <!-- Left Sidebar with Navigation Buttons -->
+    <left>
+        <VBox prefHeight="200" style="-fx-background-color: linear-gradient(to bottom, #52B788 , #40916c); -fx-padding: 20;" >
+
+            <ImageView fx:id="logoImage" fitWidth="200" fitHeight="200" preserveRatio="true" />
+            <Label text="STUDENT DATABASE" style="-fx-font-size: 20; -fx-text-fill: white; -fx-font-weight: bold;"/>
+
+            <Region prefHeight="100" />
+            <Button fx:id="HOME" text="HOME" onAction="#handleHomeAction" style="-fx-pref-width: 150;"/>
+            <Region prefHeight="10" />
+            <Button fx:id="ABOUT" text="ABOUT" onAction="#handleAboutAction" style="-fx-pref-width: 150;"/>
+            <Region prefHeight="10"/>
+            <Button fx:id="HELP" text="HELP AND SUPPORT" onAction="#handleHelpAction" style="-fx-pref-width: 150;"/>
+        </VBox>
+    </left>
+
+    <!-- Center Layout for Page Content -->
+    <center>
+        <StackPane>
+
+            <!-- Home Page with TableView -->
+            <VBox fx:id="homePage" visible="true" spacing="10" style="-fx-padding: 20;">
+                <Label text="Student Records" style="-fx-font-size: 16px; -fx-font-weight: bold;" />
+                <TableView fx:id="studentTable" prefHeight="400">
+                    <columns>
+                        <TableColumn fx:id="srNoColumn" text="Sr. No." prefWidth="50" />
+                        <TableColumn fx:id="studentIdColumn" text="Student ID" prefWidth="100" />
+                        <TableColumn fx:id="nameColumn" text="Name" prefWidth="150" />
+                        <TableColumn fx:id="admissionYearColumn" text="Admission Year" prefWidth="100" />
+                        <TableColumn fx:id="currentYearColumn" text="Current Year" prefWidth="100" />
+                        <TableColumn fx:id="courseColumn" text="Course" prefWidth="150" />
+                        <TableColumn fx:id="sem1MarksColumn" text="Sem 1 Marks" prefWidth="80" />
+                        <TableColumn fx:id="sem2MarksColumn" text="Sem 2 Marks" prefWidth="80" />
+                        <TableColumn fx:id="sem3MarksColumn" text="Sem 3 Marks" prefWidth="80" />
+                        <TableColumn fx:id="sem4MarksColumn" text="Sem 4 Marks" prefWidth="80" />
+                        <TableColumn fx:id="sem5MarksColumn" text="Sem 5 Marks" prefWidth="80" />
+                        <TableColumn fx:id="sem6MarksColumn" text="Sem 6 Marks" prefWidth="80" />
+                        <TableColumn fx:id="sem7MarksColumn" text="Sem 7 Marks" prefWidth="80" />
+                        <TableColumn fx:id="sem8MarksColumn" text="Sem 8 Marks" prefWidth="80" />
+                    </columns>
+                </TableView>
+            </VBox>
+
+            <!-- About Page -->
+            <VBox fx:id="aboutPage" visible="false" style="-fx-padding: 20;">
+                <Label text="About Section" style="-fx-font-size: 16px; -fx-font-weight: bold;" />
+            </VBox>
+
+            <!-- Help Page -->
+            <VBox fx:id="helpPage" visible="false" style="-fx-padding: 20;">
+                <Label text="Help Section" style="-fx-font-size: 16px; -fx-font-weight: bold;" />
+            </VBox>
+
+        </StackPane>
+    </center>
+</BorderPane>

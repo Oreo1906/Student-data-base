@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.image.ImageView?>
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.application.StudentDashboardController">
+    <!-- Left Navigation Pane -->
+    <left>
+        <VBox prefHeight="200" style="-fx-background-color: linear-gradient(to bottom, #52B788 , #40916c); -fx-padding: 20;" >
+
+            <ImageView fx:id="logoImage" fitWidth="200" fitHeight="200" preserveRatio="true" />
+            <Label text="STUDENT DATABASE" style="-fx-font-size: 20; -fx-text-fill: white; -fx-font-weight: bold;"/>
+
+            <Region prefHeight="100" />
+            <Button fx:id="HOME" text="HOME" onAction="#handleHomeAction" style="-fx-pref-width: 150;"/>
+            <Region prefHeight="10" />
+            <Button fx:id="ABOUT" text="ABOUT" onAction="#handleAboutAction" style="-fx-pref-width: 150;"/>
+            <Region prefHeight="10"/>
+            <Button fx:id="HELP" text="HELP AND SUPPORT" onAction="#handleHelpAction" style="-fx-pref-width: 150;"/>
+        </VBox>
+    </left>
+
+    <!-- Main Content -->
+    <center>
+        <StackPane fx:id="contentPane">
+        <VBox fx:id="homePage" spacing="15" alignment="CENTER" style="-fx-padding: 20;">
+            <!-- Name and Admission Year -->
+            <HBox spacing="10" alignment="CENTER">
+                <Label text="NAME" style="-fx-font-size: 14px;" />
+                <TextField fx:id="nameField" editable="false" />
+                <Label text="ADMISSION YEAR" style="-fx-font-size: 14px;" />
+                <TextField fx:id="admissionYearField" editable="false" />
+            </HBox>
+
+            <!-- Current Year and Student ID -->
+            <HBox spacing="10" alignment="CENTER">
+                <Label text="CURRENT YEAR" style="-fx-font-size: 14px;" />
+                <TextField fx:id="currentYearField" editable="false" />
+                <Label text="STUDENT ID" style="-fx-font-size: 14px;" />
+                <TextField fx:id="studentIdField" editable="false" />
+            </HBox>
+
+            <!-- Course -->
+            <HBox spacing="10" alignment="CENTER">
+                <Label text="COURSE" style="-fx-font-size: 14px;" />
+                <TextField fx:id="courseField" editable="false" />
+            </HBox>
+
+            <!-- Semester Marks -->
+            <Label text="SEMESTER MARKS" style="-fx-font-size: 16px; -fx-font-weight: bold;" />
+            <VBox spacing="10" alignment="CENTER">
+                <HBox spacing="10" alignment="CENTER">
+                    <Label text="SEM 1" style="-fx-font-size: 14px;" />
+                    <TextField fx:id="sem1MarksField" editable="false" />
+                    <Label text="SEM 2" style="-fx-font-size: 14px;" />
+                    <TextField fx:id="sem2MarksField" editable="false" />
+                </HBox>
+                <HBox spacing="10" alignment="CENTER">
+                    <Label text="SEM 3" style="-fx-font-size: 14px;" />
+                    <TextField fx:id="sem3MarksField" editable="false" />
+                    <Label text="SEM 4" style="-fx-font-size: 14px;" />
+                    <TextField fx:id="sem4MarksField" editable="false" />
+                </HBox>
+                <HBox spacing="10" alignment="CENTER">
+                    <Label text="SEM 5" style="-fx-font-size: 14px;" />
+                    <TextField fx:id="sem5MarksField" editable="false" />
+                    <Label text="SEM 6" style="-fx-font-size: 14px;" />
+                    <TextField fx:id="sem6MarksField" editable="false" />
+                </HBox>
+                <HBox spacing="10" alignment="CENTER">
+                    <Label text="SEM 7" style="-fx-font-size: 14px;" />
+                    <TextField fx:id="sem7MarksField" editable="false" />
+                    <Label text="SEM 8" style="-fx-font-size: 14px;" />
+                    <TextField fx:id="sem8MarksField" editable="false" />
+                </HBox>
+            </VBox>
+        </VBox>
+            <!-- About Page Content -->
+            <VBox fx:id="aboutPage" alignment="CENTER" spacing="20" visible="false">
+                <Label text="ABOUT US" style="-fx-font-size: 16px; -fx-font-weight: bold;" />
+                <Label text="This is the About section of the application." style="-fx-font-size: 14px;" />
+            </VBox>
+
+            <!-- Help and Support Page Content -->
+            <VBox fx:id="helpPage" alignment="CENTER" spacing="20" visible="false">
+                <Label text="HELP AND SUPPORT" style="-fx-font-size: 16px; -fx-font-weight: bold;" />
+                <Label text="For assistance, contact support@example.com" style="-fx-font-size: 14px;" />
+            </VBox>
+        </StackPane>
+    </center>
+</BorderPane>
