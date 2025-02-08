@@ -4,7 +4,10 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.application.TeacherDashboardController">
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.application.TeacherDashboardController"
+            prefWidth="800" prefHeight="1000"
+            minWidth="800" minHeight="1000"
+            maxWidth="800" maxHeight="1000">
 
     <!-- Left Sidebar with Navigation Buttons -->
     <left>
@@ -25,26 +28,24 @@
     <!-- Center Layout for Page Content -->
     <center>
         <StackPane>
-
             <!-- Home Page with TableView -->
             <VBox fx:id="homePage" visible="true" spacing="10" style="-fx-padding: 20;">
                 <Label text="Student Records" style="-fx-font-size: 16px; -fx-font-weight: bold;" />
-                <TableView fx:id="studentTable" prefHeight="400">
+                <HBox spacing="10">
+                    <TextField fx:id="searchField" promptText="Search by Name" style="-fx-pref-width: 300;"/>
+                    <Button text="Search" onAction="#handleSearchAction" style="-fx-background-color: #3498db; -fx-text-fill: white;"/>
+                    <Button text="Clear" onAction="#handleClearSearch" style="-fx-background-color: #e74c3c; -fx-text-fill: white;"/>
+                </HBox>
+                <TableView fx:id="studentTable" style="-fx-background-color: white; -fx-border-color: #bdc3c7; -fx-border-radius: 5px; -fx-padding: 5px;">
                     <columns>
                         <TableColumn fx:id="srNoColumn" text="Sr. No." prefWidth="50" />
                         <TableColumn fx:id="studentIdColumn" text="Student ID" prefWidth="100" />
-                        <TableColumn fx:id="nameColumn" text="Name" prefWidth="150" />
-                        <TableColumn fx:id="admissionYearColumn" text="Admission Year" prefWidth="100" />
-                        <TableColumn fx:id="currentYearColumn" text="Current Year" prefWidth="100" />
-                        <TableColumn fx:id="courseColumn" text="Course" prefWidth="150" />
-                        <TableColumn fx:id="sem1MarksColumn" text="Sem 1 Marks" prefWidth="80" />
-                        <TableColumn fx:id="sem2MarksColumn" text="Sem 2 Marks" prefWidth="80" />
-                        <TableColumn fx:id="sem3MarksColumn" text="Sem 3 Marks" prefWidth="80" />
-                        <TableColumn fx:id="sem4MarksColumn" text="Sem 4 Marks" prefWidth="80" />
-                        <TableColumn fx:id="sem5MarksColumn" text="Sem 5 Marks" prefWidth="80" />
-                        <TableColumn fx:id="sem6MarksColumn" text="Sem 6 Marks" prefWidth="80" />
-                        <TableColumn fx:id="sem7MarksColumn" text="Sem 7 Marks" prefWidth="80" />
-                        <TableColumn fx:id="sem8MarksColumn" text="Sem 8 Marks" prefWidth="80" />
+                        <TableColumn fx:id="studentNameColumn" text="Student Name" prefWidth="150" />
+                        <TableColumn fx:id="admissionYearColumn" text="Admission Year" prefWidth="120" />
+                        <TableColumn fx:id="currentYearColumn" text="Current Year" prefWidth="120" />
+                        <TableColumn fx:id="currentSemColumn" text="Current Semester" prefWidth="150" />
+                        <TableColumn fx:id="courseColumn" text="Course" prefWidth="200" />
+                        <TableColumn fx:id="detailsColumn" text="Details" prefWidth="100" />
                     </columns>
                 </TableView>
             </VBox>
@@ -57,6 +58,10 @@
             <!-- Help Page -->
             <VBox fx:id="helpPage" visible="false" style="-fx-padding: 20;">
                 <Label text="Help Section" style="-fx-font-size: 16px; -fx-font-weight: bold;" />
+            </VBox>
+
+            <VBox fx:id="detailsPanel" visible="false">
+                <Label text="Details Panel (Add Further Components Here)" />
             </VBox>
 
         </StackPane>

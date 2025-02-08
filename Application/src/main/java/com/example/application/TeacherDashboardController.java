@@ -2,6 +2,8 @@ package com.example.application;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
@@ -10,11 +12,16 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
+import javafx.scene.control.TableCell;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.control.TextField;
+
+
+
 
 public class TeacherDashboardController {
 
-
-        @FXML
+    @FXML
         private Button HOME;
         @FXML
         private Button ABOUT;
@@ -38,40 +45,68 @@ public class TeacherDashboardController {
         @FXML
         private TableColumn<StudentRecord, String> studentIdColumn;
         @FXML
-        private TableColumn<StudentRecord, String> nameColumn;
-        @FXML
         private TableColumn<StudentRecord, String> admissionYearColumn;
         @FXML
         private TableColumn<StudentRecord, String> currentYearColumn;
         @FXML
         private TableColumn<StudentRecord, String> courseColumn;
         @FXML
-        private TableColumn<StudentRecord, String> sem1MarksColumn;
+        private TableColumn<StudentRecord, Void> detailsColumn;
         @FXML
-        private TableColumn<StudentRecord, String> sem2MarksColumn;
-        @FXML
-        private TableColumn<StudentRecord, String> sem3MarksColumn;
-        @FXML
-        private TableColumn<StudentRecord, String> sem4MarksColumn;
-        @FXML
-        private TableColumn<StudentRecord, String> sem5MarksColumn;
-        @FXML
-        private TableColumn<StudentRecord, String> sem6MarksColumn;
-        @FXML
-        private TableColumn<StudentRecord, String> sem7MarksColumn;
-        @FXML
-        private TableColumn<StudentRecord, String> sem8MarksColumn;
+        private TableColumn<StudentRecord, String> studentNameColumn;
 
+        @FXML private TableColumn<StudentRecord, String> currentSemColumn;
         @FXML
+        private VBox detailsPanel;
+        @FXML
+        private TextField searchField;
+        private ObservableList<StudentRecord> masterData = FXCollections.observableArrayList();
+
+        private ObservableList<StudentRecord> studentData;
+        private FilteredList<StudentRecord> filteredData;
+
+    @FXML
+        private BorderPane rootPane;
+
+    @FXML
         private void initialize() {
-            logoImage.setImage(new Image("C:\\Users\\Shreya\\IdeaProjects\\Application\\src\\main\\resources\\Screenshot__697_-removebg-preview.png"));
-            configureTable();
-            loadSampleData();
-            setupNavigation();
-            addButtonAnimation(HOME);
-            addButtonAnimation1(ABOUT);
-            addButtonAnimation2(HELP);
+        logoImage.setImage(new Image("C:\\Users\\Shreya\\IdeaProjects\\Application\\src\\main\\resources\\Screenshot__697_-removebg-preview.png"));
+        configureTable();
+        setupNavigation();
+        loadSampleData();
+        setupSearch();
+        addButtonAnimation(HOME);
+        addButtonAnimation1(ABOUT);
+        addButtonAnimation2(HELP);
         }
+        private void setupSearch() {
+            FilteredList<StudentRecord> filteredData = new FilteredList<>(masterData, b -> true);
+
+            searchField.textProperty().addListener((observable, oldValue, newValue) -> {
+                filteredData.setPredicate(student -> {
+                    if (newValue == null || newValue.trim().isEmpty()) {
+                        return true; // Show all if search is empty
+                    }
+
+                    String lowerCaseFilter = newValue.toLowerCase();
+                    return student.getName().toLowerCase().contains(lowerCaseFilter); // SEARCH BY NAME
+                });
+            });
+
+            SortedList<StudentRecord> sortedData = new SortedList<>(filteredData);
+            sortedData.comparatorProperty().bind(studentTable.comparatorProperty());
+
+            studentTable.setItems(sortedData);
+        }
+        @FXML
+        private void handleSearchAction() {
+            setupSearch();
+        }
+        @FXML
+        private void handleClearSearch() {
+            searchField.clear();
+        }
+
     private void addButtonAnimation(Button button) {
         // Initial button style
         button.setStyle(
@@ -279,111 +314,76 @@ public class TeacherDashboardController {
             );
         });
     }
-        private void configureTable() {
-            // Setting up columns with corresponding properties
-            srNoColumn.setCellValueFactory(new PropertyValueFactory<>("srNo"));
-            studentIdColumn.setCellValueFactory(new PropertyValueFactory<>("studentId"));
-            nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
-            admissionYearColumn.setCellValueFactory(new PropertyValueFactory<>("admissionYear"));
-            currentYearColumn.setCellValueFactory(new PropertyValueFactory<>("currentYear"));
-            courseColumn.setCellValueFactory(new PropertyValueFactory<>("course"));
-            sem1MarksColumn.setCellValueFactory(new PropertyValueFactory<>("sem1Marks"));
-            sem2MarksColumn.setCellValueFactory(new PropertyValueFactory<>("sem2Marks"));
-            sem3MarksColumn.setCellValueFactory(new PropertyValueFactory<>("sem3Marks"));
-            sem4MarksColumn.setCellValueFactory(new PropertyValueFactory<>("sem4Marks"));
-            sem5MarksColumn.setCellValueFactory(new PropertyValueFactory<>("sem5Marks"));
-            sem6MarksColumn.setCellValueFactory(new PropertyValueFactory<>("sem6Marks"));
-            sem7MarksColumn.setCellValueFactory(new PropertyValueFactory<>("sem7Marks"));
-            sem8MarksColumn.setCellValueFactory(new PropertyValueFactory<>("sem8Marks"));
-        }
+    private void configureTable() {
+        srNoColumn.setCellValueFactory(new PropertyValueFactory<>("srNo"));
+        studentIdColumn.setCellValueFactory(new PropertyValueFactory<>("studentId"));
+        studentNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        admissionYearColumn.setCellValueFactory(new PropertyValueFactory<>("admissionYear"));
+        currentYearColumn.setCellValueFactory(new PropertyValueFactory<>("currentYear"));
+        currentSemColumn.setCellValueFactory(new PropertyValueFactory<>("currentSemester"));
+        courseColumn.setCellValueFactory(new PropertyValueFactory<>("course"));
 
-        private void loadSampleData() {
-            // Example data for testing
-            ObservableList<StudentRecord> data = FXCollections.observableArrayList(
-                    new StudentRecord(1, "ST101", "John Doe", "2020", "2024", "Computer Science", "85", "90", "80", "88", "85", "89", "92", "95"),
-                    new StudentRecord(2, "ST102", "Jane Smith", "2019", "2023", "Electronics", "75", "78", "88", "92", "86", "84", "81", "89")
-            );
-            studentTable.setItems(data);
-        }
+        detailsColumn.setCellFactory(param -> new TableCell<>() {
+            private final Button detailsButton = new Button("        View       ");
+
+            {
+                detailsButton.setStyle("-fx-background-color: #27ae60; -fx-text-fill: white; -fx-border-radius: 3px;");
+                detailsButton.setOnAction(event -> showDetailsPanel());
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                setGraphic(empty ? null : detailsButton);
+            }
+        });
+    }
+
+    private void loadSampleData() {
+        // Adding sample students
+        masterData.add(new StudentRecord(1, "ST101", "John Doe", "2020", "4th Year", "8th", "Computer Science"));
+        masterData.add(new StudentRecord(2, "ST102", "Jane Smith", "2019", "Final Year", "8th", "Electronics"));
+        masterData.add(new StudentRecord(3, "ST103", "Alice Johnson", "2021", "3rd Year", "6th", "Mechanical"));
+        masterData.add(new StudentRecord(4, "ST104", "Bob Brown", "2022", "2nd Year", "4th", "Civil Engineering"));
+        masterData.add(new StudentRecord(5, "ST105", "Charlie Davis", "2023", "1st Year", "2nd", "Biomedical"));
+
+        studentTable.setItems(masterData);
+    }
 
         private void setupNavigation() {
             HOME.setOnAction(event -> handleHomeAction());
             ABOUT.setOnAction(event -> handleAboutAction());
             HELP.setOnAction(event -> handleHelpAction());
         }
+        private void showDetailsPanel() {
+            homePage.setVisible(false);
+            aboutPage.setVisible(false);
+            helpPage.setVisible(false);
+            detailsPanel.setVisible(true); // Display the details panel
+        }
         @FXML
         private void handleHomeAction() {
             homePage.setVisible(true);
             aboutPage.setVisible(false);
             helpPage.setVisible(false);
+            detailsPanel.setVisible(false);
         }
         @FXML
         private void handleAboutAction() {
             homePage.setVisible(false);
             aboutPage.setVisible(true);
             helpPage.setVisible(false);
+            detailsPanel.setVisible(false);
         }
         @FXML
         private void handleHelpAction() {
             homePage.setVisible(false);
             aboutPage.setVisible(false);
             helpPage.setVisible(true);
+            detailsPanel.setVisible(false);
         }
     }
 
-    // Data model class for student records
-    class StudentRecord {
-        private int srNo;
-        private String studentId;
-        private String name;
-        private String admissionYear;
-        private String currentYear;
-        private String course;
-        private String sem1Marks;
-        private String sem2Marks;
-        private String sem3Marks;
-        private String sem4Marks;
-        private String sem5Marks;
-        private String sem6Marks;
-        private String sem7Marks;
-        private String sem8Marks;
 
-        public StudentRecord(int srNo, String studentId, String name, String admissionYear, String currentYear, String course,
-                             String sem1Marks, String sem2Marks, String sem3Marks, String sem4Marks, String sem5Marks,
-                             String sem6Marks, String sem7Marks, String sem8Marks) {
-            this.srNo = srNo;
-            this.studentId = studentId;
-            this.name = name;
-            this.admissionYear = admissionYear;
-            this.currentYear = currentYear;
-            this.course = course;
-            this.sem1Marks = sem1Marks;
-            this.sem2Marks = sem2Marks;
-            this.sem3Marks = sem3Marks;
-            this.sem4Marks = sem4Marks;
-            this.sem5Marks = sem5Marks;
-            this.sem6Marks = sem6Marks;
-            this.sem7Marks = sem7Marks;
-            this.sem8Marks = sem8Marks;
-        }
-
-        // Getters
-        public int getSrNo() { return srNo; }
-        public String getStudentId() { return studentId; }
-        public String getName() { return name; }
-        public String getAdmissionYear() { return admissionYear; }
-        public String getCurrentYear() { return currentYear; }
-        public String getCourse() { return course; }
-        public String getSem1Marks() { return sem1Marks; }
-        public String getSem2Marks() { return sem2Marks; }
-        public String getSem3Marks() { return sem3Marks; }
-        public String getSem4Marks() { return sem4Marks; }
-        public String getSem5Marks() { return sem5Marks; }
-        public String getSem6Marks() { return sem6Marks; }
-        public String getSem7Marks() { return sem7Marks; }
-        public String getSem8Marks() { return sem8Marks; }
-
-
-    }
 
 
